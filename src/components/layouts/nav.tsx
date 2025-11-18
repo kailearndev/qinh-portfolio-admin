@@ -4,8 +4,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+  BreadcrumbPage
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -52,16 +51,11 @@ export default function Navbar() {
           />
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/home">
-                  <BreadcrumbPage>Home</BreadcrumbPage>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
+
               {navBar.map((item) => {
                 if (item.url === location.pathname) {
                   return (
                     <BreadcrumbItem key={item.url}>
-                      <BreadcrumbSeparator />
                       <BreadcrumbLink href={item.url}>
                         <BreadcrumbPage>{item.title}</BreadcrumbPage>
                       </BreadcrumbLink>

@@ -15,6 +15,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     let mounted = true;
 
@@ -50,10 +51,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     await supabase.auth.signOut();
 
-
-    window.location.href = "/auth/login";
     setUser(null);
     setIsLoading(false);
+    window.location.replace("/")
 
   };
 
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         logout,
       }}
     >
-      {children}
+      {isLoading ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   );
 }

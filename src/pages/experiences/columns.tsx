@@ -1,7 +1,11 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
 import type { IExperience } from "@/types/experience";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { type ColumnDef } from "@tanstack/react-table";
 
 // This type is used to define the shape of our data.
@@ -30,26 +34,40 @@ export const columns: ColumnDef<IExperience>[] = [
   },
 
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "company",
+    header: "Company",
   },
   {
-    accessorKey: "phone",
-    header: "Phone",
+    accessorKey: "duration",
+    header: "Duration",
   },
   {
-    accessorKey: "address",
-    header: "Address",
+    accessorKey: "position",
+    header: "Position",
   },
-
-
-
   {
-    accessorKey: "created_at",
-    header: "Created At",
-    cell: (info) => {
-      const date = new Date(info.getValue() as string);
-      return date.toLocaleDateString();
-    },
+    accessorKey: "is_public",
+    header: "Public",
+    cell: ({ row }) => <Switch checked={row.original.is_public} />,
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+
+    cell: ({ row }) => (
+      <Tooltip>
+        <TooltipTrigger>
+          <span className="underline cursor-pointer">View Description</span>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="max-w-xs">{row.original.description}</p>
+        </TooltipContent>
+      </Tooltip>
+    ),
+  },
+  {
+    accessorKey: "--actions",
+    header: "Actions",
+    cell: () => <Button className="max-w-xs">Edit</Button>,
   },
 ];

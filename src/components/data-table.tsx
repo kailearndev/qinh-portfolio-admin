@@ -5,6 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  type RowSelectionState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -19,12 +20,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
+import React from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   loading?: boolean;
-  onRowClick?: (rowData: TData) => void; // Add this prop definition
+  onEdit?: (rowData: TData) => void;
+  onDelete?: (rowData: TData) => void;
+  onRowClick?: (rowData: TData) => void;
+
+  setRowSelection: React.Dispatch<React.SetStateAction<RowSelectionState>>;
+  rowSelection?: Record<string, boolean>;
+  onRowSelectionChange?: (state: Record<string, boolean>) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -32,13 +40,27 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   onRowClick,
+  onDelete,
+  onEdit,
+  setRowSelection,
+  rowSelection,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
+    meta: {
+      onEdit: (row) => onEdit?.(row),
+      onDelete: (row) => onDelete?.(row),
+    },
     data,
     columns,
+    enableRowSelection: true,
 
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
+    getRowId: (row) => String((row as any).id),
   });
 
   return (
@@ -76,7 +98,7 @@ export function DataTable<TData, TValue>({
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  onClick={() => onRowClick && onRowClick(row.original)} // Add this line
+                  onClick={() => onRowClick?.(row.original)} // click row để mở detail
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
