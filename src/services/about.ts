@@ -1,24 +1,22 @@
-import { pb } from "@/lib/pocketbast";
-import type { About, AboutDTO } from "@/types/about";
+import { supabase } from "@/lib/supbase";
+import type { IAbout } from "@/types/about";
 
+const getAbout = async () => {
+  const { data, error } = await supabase.from("about").select("*, users(*), experiences(*)").single();
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data
+}
+const updateAbout = async (aboutPayload: IAbout) => {
+  const { data, error } = await supabase
+    .from("about")
+    .update(aboutPayload)
+    .eq("id", aboutPayload.id);
+  if (error) throw error;
+  return data;
+}
 export const AboutService = {
-  async list(filers?: Record<string, number>) {
-    await pb
-      .collection("about")
-      .getList(filers?.page ?? 1, filers?.perPage ?? 10, {
-        expand: "work_experience", // sắp xếp mới nhất lên đầu
-      });
-  },
-  async getOne(id: string): Promise<About> {
-    return await pb.collection("about").getOne(id);
-  },
-  async create(data: any) {
-    return await pb.collection("about").create(data);
-  },
-  async update(id: string, data: AboutDTO) {
-    return await pb.collection("about").update(id, data);
-  },
-  async remove(id: string) {
-    return await pb.collection("about").delete(id);
-  },
+  getAbout,
+  updateAbout
 };

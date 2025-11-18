@@ -23,17 +23,21 @@ const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Menu",
-      url: "/",
+      title: "List Page",
+      url: "/home",
 
       items: [
         {
-          title: "Basic Information",
-          url: "/basic-infomation",
+          title: "Home",
+          url: "/home",
         },
         {
           title: "About",
           url: "/about",
+        },
+        {
+          title: "Experience",
+          url: "/experience",
         },
         {
           title: "Project",

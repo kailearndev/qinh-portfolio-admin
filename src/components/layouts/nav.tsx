@@ -19,12 +19,17 @@ export default function Navbar() {
   const location = useLocation();
   const navBar = [
     {
-      title: "Basic Information",
-      url: "/basic-infomation",
+      title: "Home",
+      url: "/home",
     },
     {
       title: "About",
       url: "/about",
+    },
+
+    {
+      title: "Experience",
+      url: "/experience",
     },
     {
       title: "Project",
@@ -48,7 +53,7 @@ export default function Navbar() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">
+                <BreadcrumbLink href="/home">
                   <BreadcrumbPage>Home</BreadcrumbPage>
                 </BreadcrumbLink>
               </BreadcrumbItem>

@@ -12,7 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as AuthenticatedBasicInfomationIndexRouteImport } from './routes/_authenticated/basic-infomation/index'
+import { Route as AuthenticatedHomeIndexRouteImport } from './routes/_authenticated/home/index'
+import { Route as AuthenticatedExperienceIndexRouteImport } from './routes/_authenticated/experience/index'
 import { Route as AuthenticatedAboutIndexRouteImport } from './routes/_authenticated/about/index'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
@@ -29,10 +30,15 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedBasicInfomationIndexRoute =
-  AuthenticatedBasicInfomationIndexRouteImport.update({
-    id: '/basic-infomation/',
-    path: '/basic-infomation/',
+const AuthenticatedHomeIndexRoute = AuthenticatedHomeIndexRouteImport.update({
+  id: '/home/',
+  path: '/home/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedExperienceIndexRoute =
+  AuthenticatedExperienceIndexRouteImport.update({
+    id: '/experience/',
+    path: '/experience/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedAboutIndexRoute = AuthenticatedAboutIndexRouteImport.update({
@@ -45,13 +51,15 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
   '/about': typeof AuthenticatedAboutIndexRoute
-  '/basic-infomation': typeof AuthenticatedBasicInfomationIndexRoute
+  '/experience': typeof AuthenticatedExperienceIndexRoute
+  '/home': typeof AuthenticatedHomeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
   '/about': typeof AuthenticatedAboutIndexRoute
-  '/basic-infomation': typeof AuthenticatedBasicInfomationIndexRoute
+  '/experience': typeof AuthenticatedExperienceIndexRoute
+  '/home': typeof AuthenticatedHomeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,20 +67,22 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/_authenticated/about/': typeof AuthenticatedAboutIndexRoute
-  '/_authenticated/basic-infomation/': typeof AuthenticatedBasicInfomationIndexRoute
+  '/_authenticated/experience/': typeof AuthenticatedExperienceIndexRoute
+  '/_authenticated/home/': typeof AuthenticatedHomeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login' | '/about' | '/basic-infomation'
+  fullPaths: '/' | '/auth/login' | '/about' | '/experience' | '/home'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login' | '/about' | '/basic-infomation'
+  to: '/' | '/auth/login' | '/about' | '/experience' | '/home'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth/login'
     | '/_authenticated/about/'
-    | '/_authenticated/basic-infomation/'
+    | '/_authenticated/experience/'
+    | '/_authenticated/home/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -104,11 +114,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/basic-infomation/': {
-      id: '/_authenticated/basic-infomation/'
-      path: '/basic-infomation'
-      fullPath: '/basic-infomation'
-      preLoaderRoute: typeof AuthenticatedBasicInfomationIndexRouteImport
+    '/_authenticated/home/': {
+      id: '/_authenticated/home/'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthenticatedHomeIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/experience/': {
+      id: '/_authenticated/experience/'
+      path: '/experience'
+      fullPath: '/experience'
+      preLoaderRoute: typeof AuthenticatedExperienceIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/about/': {
@@ -123,13 +140,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAboutIndexRoute: typeof AuthenticatedAboutIndexRoute
-  AuthenticatedBasicInfomationIndexRoute: typeof AuthenticatedBasicInfomationIndexRoute
+  AuthenticatedExperienceIndexRoute: typeof AuthenticatedExperienceIndexRoute
+  AuthenticatedHomeIndexRoute: typeof AuthenticatedHomeIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAboutIndexRoute: AuthenticatedAboutIndexRoute,
-  AuthenticatedBasicInfomationIndexRoute:
-    AuthenticatedBasicInfomationIndexRoute,
+  AuthenticatedExperienceIndexRoute: AuthenticatedExperienceIndexRoute,
+  AuthenticatedHomeIndexRoute: AuthenticatedHomeIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
