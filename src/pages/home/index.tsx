@@ -3,7 +3,7 @@ import {
   Field,
   FieldError,
   FieldGroup,
-  FieldLabel
+  FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { HomeService } from "@/services/home";
@@ -14,48 +14,36 @@ import * as z from "zod";
 
 const formSchema = z.object({
   id: z.string(),
-  name: z
-    .string(),
-  avatar_url: z
-    .string(),
-  positions: z
-    .string(),
-  phone: z
-    .string(),
-  email: z
-    .string(),
-  tiktok: z
-    .string(),
-  facebook: z
-    .string(),
-  address: z
-    .string(),
-  website: z
-    .string(),
-
-
-
-})
+  name: z.string(),
+  avatar_url: z.string(),
+  positions: z.string(),
+  phone: z.string(),
+  email: z.string(),
+  tiktok: z.string(),
+  facebook: z.string(),
+  address: z.string(),
+  website: z.string(),
+});
 export default function Home() {
   const { data, isLoading } = useQuery({
     queryFn: () => HomeService.getHome(),
     queryKey: ["home-data"],
-
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
-    values: data
-  })
+    values: data,
+  });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const res = await HomeService.updateHome(data);
     console.log(res);
-  }
-  if (isLoading) return <div className="flex justify-center items-center">Loading...</div>;
+  };
+  if (isLoading)
+    return <div className="flex justify-center items-center">Loading...</div>;
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} >
+    <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <section className="col-span-3">
           <h1 className="text-4xl font-bold mb-4">Basic Information</h1>
@@ -63,7 +51,12 @@ export default function Home() {
 
         <section className="col-span-3 flex justify-end">
           <Button type="submit">Save</Button>
-          <Button type="button" variant="outline" className="ml-2" onClick={() => form.reset()}>
+          <Button
+            type="button"
+            variant="outline"
+            className="ml-2"
+            onClick={() => form.reset()}
+          >
             Cancel
           </Button>
         </section>
@@ -72,9 +65,7 @@ export default function Home() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-name">
-                Name
-              </FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-name">Name</FieldLabel>
               <Input
                 {...field}
                 id="form-rhf-demo-name"
@@ -82,9 +73,7 @@ export default function Home() {
                 placeholder="Input your name"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -103,9 +92,7 @@ export default function Home() {
                 placeholder="Input your avatar URL"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -124,9 +111,7 @@ export default function Home() {
                 placeholder="Input your positions"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -135,9 +120,7 @@ export default function Home() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-email">
-                Email
-              </FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-email">Email</FieldLabel>
               <Input
                 {...field}
                 id="form-rhf-demo-positions"
@@ -145,9 +128,7 @@ export default function Home() {
                 placeholder="Input your positions"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -156,9 +137,7 @@ export default function Home() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-phone">
-                Phone
-              </FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-phone">Phone</FieldLabel>
               <Input
                 {...field}
                 id="form-rhf-demo-phone"
@@ -166,9 +145,7 @@ export default function Home() {
                 placeholder="Input your phone"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -177,9 +154,7 @@ export default function Home() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-address">
-                Address
-              </FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-address">Address</FieldLabel>
               <Input
                 {...field}
                 id="form-rhf-demo-address"
@@ -187,9 +162,7 @@ export default function Home() {
                 placeholder="Input your address"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -198,9 +171,7 @@ export default function Home() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-facebook">
-                Facebook
-              </FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-facebook">Facebook</FieldLabel>
               <Input
                 {...field}
                 id="form-rhf-demo-facebook"
@@ -208,9 +179,7 @@ export default function Home() {
                 placeholder="Input your facebook"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -219,9 +188,7 @@ export default function Home() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-tiktok">
-                Tiktok
-              </FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-tiktok">Tiktok</FieldLabel>
               <Input
                 {...field}
                 id="form-rhf-demo-tiktok"
@@ -229,9 +196,7 @@ export default function Home() {
                 placeholder="Input your positions"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
@@ -240,9 +205,7 @@ export default function Home() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-website">
-                Website
-              </FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-website">Website</FieldLabel>
               <Input
                 {...field}
                 id="form-rhf-demo-website"
@@ -250,13 +213,11 @@ export default function Home() {
                 placeholder="Input your positions"
                 autoComplete="off"
               />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
       </FieldGroup>
-    </form >
+    </form>
   );
 }

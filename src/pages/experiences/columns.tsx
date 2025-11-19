@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
@@ -29,6 +28,7 @@ export const columns: ColumnDef<IExperience>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
+        onClick={(e) => e.stopPropagation()}
       />
     ),
   },
@@ -48,7 +48,12 @@ export const columns: ColumnDef<IExperience>[] = [
   {
     accessorKey: "is_public",
     header: "Public",
-    cell: ({ row }) => <Switch checked={row.original.is_public} />,
+    cell: ({ row }) => (
+      <Switch
+        onClick={(e) => e.stopPropagation()}
+        checked={row.original.is_public}
+      />
+    ),
   },
   {
     accessorKey: "description",
@@ -64,10 +69,5 @@ export const columns: ColumnDef<IExperience>[] = [
         </TooltipContent>
       </Tooltip>
     ),
-  },
-  {
-    accessorKey: "--actions",
-    header: "Actions",
-    cell: () => <Button className="max-w-xs">Edit</Button>,
   },
 ];

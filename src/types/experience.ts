@@ -1,6 +1,6 @@
 export interface IExperience {
     id: string
-    created_at: string
+    
     company: string
     position: string
     duration: string

@@ -1,11 +1,10 @@
 
 export interface IAbout {
   id: string
-
-  works_description: any
-  client_worked: any
-  client_description: any
-  slogan: any
-  works_experiened: any
+  works_description: string
+  client_worked: string
+  client_description: string
+  slogan: string
+  works_experienced: string
 }
 

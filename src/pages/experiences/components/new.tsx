@@ -16,7 +16,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { ExperienceService } from "@/services/experience";
-import type { IExperience } from "@/types/experience";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
@@ -24,19 +23,17 @@ import { toast } from "sonner";
 import * as z from "zod";
 
 type ExperienceDetailProps = {
-  data?: IExperience;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-export default function ExperienceDetail({
+export default function AddExperienceNew({
   open,
-  data,
+
   onOpenChange,
 }: ExperienceDetailProps) {
-  const query = useQueryClient();
+  const queryClient = useQueryClient();
   const experienceSchema = z.object({
-    id: z.string(),
     company: z.string().min(1, "Company is required"),
     duration: z.string().min(10, "Duration must be at least 10 characters"),
     position: z.string().min(5, "Position must be at least 5 characters"),
@@ -46,31 +43,31 @@ export default function ExperienceDetail({
   });
   const form = useForm<z.infer<typeof experienceSchema>>({
     resolver: zodResolver(experienceSchema),
-
-    values: data,
+    defaultValues: {
+      company: "",
+      duration: "",
+      position: "",
+      description: "",
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof experienceSchema>) => {
-    const res = await ExperienceService.updateExperience({
+    const res = await ExperienceService.createExperience({
       ...values,
-      user_id: data?.user_id || "",
       is_public: true,
-      about_id: data?.about_id || "",
     });
     if (res.status === "success") {
-      toast.success("Experience updated successfully!");
-      await query.invalidateQueries({ queryKey: ["experience-data"] });
-      open && onOpenChange && onOpenChange(false);
+      await queryClient.invalidateQueries({ queryKey: ["experience-data"] });
+      toast.success("Experience created successfully!");
+      onOpenChange && onOpenChange(false);
       form.reset();
-    } else {
-      toast.error("Failed to update experience.");
     }
   };
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent onEscapeKeyDown={() => form.reset}>
         <SheetHeader>
-          <SheetTitle>Edit Experience Details</SheetTitle>
+          <SheetTitle>Add Experience </SheetTitle>
           <SheetDescription asChild>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <FieldGroup className="grid grid-cols-1  gap-4 border-t pt-4 mt-4">
