@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthenticatedProjectIndexRouteImport } from './routes/_authenticated/project/index'
 import { Route as AuthenticatedHomeIndexRouteImport } from './routes/_authenticated/home/index'
 import { Route as AuthenticatedExperienceIndexRouteImport } from './routes/_authenticated/experience/index'
 import { Route as AuthenticatedAboutIndexRouteImport } from './routes/_authenticated/about/index'
@@ -30,6 +31,12 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedProjectIndexRoute =
+  AuthenticatedProjectIndexRouteImport.update({
+    id: '/project/',
+    path: '/project/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedHomeIndexRoute = AuthenticatedHomeIndexRouteImport.update({
   id: '/home/',
   path: '/home/',
@@ -53,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AuthenticatedAboutIndexRoute
   '/experience': typeof AuthenticatedExperienceIndexRoute
   '/home': typeof AuthenticatedHomeIndexRoute
+  '/project': typeof AuthenticatedProjectIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -60,6 +68,7 @@ export interface FileRoutesByTo {
   '/about': typeof AuthenticatedAboutIndexRoute
   '/experience': typeof AuthenticatedExperienceIndexRoute
   '/home': typeof AuthenticatedHomeIndexRoute
+  '/project': typeof AuthenticatedProjectIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,12 +78,19 @@ export interface FileRoutesById {
   '/_authenticated/about/': typeof AuthenticatedAboutIndexRoute
   '/_authenticated/experience/': typeof AuthenticatedExperienceIndexRoute
   '/_authenticated/home/': typeof AuthenticatedHomeIndexRoute
+  '/_authenticated/project/': typeof AuthenticatedProjectIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login' | '/about' | '/experience' | '/home'
+  fullPaths:
+    | '/'
+    | '/auth/login'
+    | '/about'
+    | '/experience'
+    | '/home'
+    | '/project'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login' | '/about' | '/experience' | '/home'
+  to: '/' | '/auth/login' | '/about' | '/experience' | '/home' | '/project'
   id:
     | '__root__'
     | '/'
@@ -83,6 +99,7 @@ export interface FileRouteTypes {
     | '/_authenticated/about/'
     | '/_authenticated/experience/'
     | '/_authenticated/home/'
+    | '/_authenticated/project/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -114,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/project/': {
+      id: '/_authenticated/project/'
+      path: '/project'
+      fullPath: '/project'
+      preLoaderRoute: typeof AuthenticatedProjectIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/home/': {
       id: '/_authenticated/home/'
       path: '/home'
@@ -142,12 +166,14 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAboutIndexRoute: typeof AuthenticatedAboutIndexRoute
   AuthenticatedExperienceIndexRoute: typeof AuthenticatedExperienceIndexRoute
   AuthenticatedHomeIndexRoute: typeof AuthenticatedHomeIndexRoute
+  AuthenticatedProjectIndexRoute: typeof AuthenticatedProjectIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAboutIndexRoute: AuthenticatedAboutIndexRoute,
   AuthenticatedExperienceIndexRoute: AuthenticatedExperienceIndexRoute,
   AuthenticatedHomeIndexRoute: AuthenticatedHomeIndexRoute,
+  AuthenticatedProjectIndexRoute: AuthenticatedProjectIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
