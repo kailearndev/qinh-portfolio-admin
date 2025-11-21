@@ -1,5 +1,3 @@
-"use client";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import type { IProject } from "@/types/project";
 import { Link } from "@tanstack/react-router";

@@ -3,15 +3,16 @@ import { Button } from "@/components/ui/button";
 import { ProjectService } from "@/services/project";
 import type { IProject } from "@/types/project";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { CirclePlus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { columns } from "./columns";
-import ExperienceDetail from "./components/detail";
-import AddExperienceNew from "./components/new";
 
 export default function Project() {
   const query = useQueryClient();
+
+  const navigate = useNavigate();
   const [openDetail, setOpenDetail] = useState<boolean>(false);
   const [openNew, setOpenNew] = useState<boolean>(false);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -43,12 +44,12 @@ export default function Project() {
   return (
     <section className="flex flex-col gap-4">
       <div>
-        <h1 className="text-2xl font-bold">Projects</h1>
-        <p className="text-muted-foreground">Manage projects information</p>
+        <h1 className="text-2xl font-bold">Project</h1>
+        <p className="text-muted-foreground">Manage project information</p>
       </div>
       <div id="action" className="flex justify-end items-center gap-4">
         <Button
-          onClick={() => setOpenNew(true)}
+          onClick={() => navigate({ to: "/project/register" })}
           className="bg-blue-600"
           variant={"outline"}
         >
@@ -69,17 +70,14 @@ export default function Project() {
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
         loading={isLoading}
-        onRowClick={(row) => handleOpenDetail(row)}
+        onRowClick={(row) =>
+          navigate({
+            to: `/project/${row.slug}`,
+          })
+        }
         columns={columns}
         data={data || []}
       />
-
-      <ExperienceDetail
-        open={openDetail}
-        onOpenChange={setOpenDetail}
-        data={selectedProject}
-      />
-      <AddExperienceNew open={openNew} onOpenChange={setOpenNew} />
     </section>
   );
 }

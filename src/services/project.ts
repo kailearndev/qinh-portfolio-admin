@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supbase";
-import type { ProjectDTO } from "@/types/project";
+import type { IProject, ProjectDTO } from "@/types/project";
 
 const getProject = async () => {
   // Simulate an API call
@@ -27,8 +27,6 @@ const { error } = await supabase
 }
 const createProject = async (exp: Omit<ProjectDTO, "id">) => {
   
-
-  
 const { error } = await supabase
   .from('projects')
   .insert(exp)
@@ -42,7 +40,7 @@ const { error } = await supabase
 }
 const deleteProjects = async (ids: string[]) => {
   const { error } = await supabase
-    .from('Projects')
+    .from('projects')
     .delete()
     .in('id', ids)
   
@@ -52,9 +50,25 @@ const deleteProjects = async (ids: string[]) => {
     "data": true
   }
 }
+const getProjectById = async (slug: string):Promise<{status: string; data: IProject}> => {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+
+  if (error) throw error;
+  return {
+    status: "success",
+    data: data as IProject
+
+  };
+}
+
 export const ProjectService = {
   getProject,
   updateProject,
   createProject,
-  deleteProjects
+  deleteProjects,
+  getProjectById
 }
