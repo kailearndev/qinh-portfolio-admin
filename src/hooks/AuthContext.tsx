@@ -53,8 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setUser(null);
     setIsLoading(false);
-    window.location.replace("/")
-
+    window.location.replace("/");
   };
 
   return (

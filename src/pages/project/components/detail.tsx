@@ -19,6 +19,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import SelectJobs from "./select-jobs";
 
 type ProjectDetailProps = {
   data?: IProject;
@@ -30,6 +31,7 @@ export default function ProjectDetail({ data }: ProjectDetailProps) {
   const projectSchema = z.object({
     id: z.string(),
     slug: z.string().min(1, "Slug is required"),
+    job_id: z.string().min(1, "Job is required"),
     short_detail: z
       .string()
       .min(10, "Short detail must be at least 10 characters"),
@@ -160,6 +162,25 @@ export default function ProjectDetail({ data }: ProjectDetailProps) {
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
+              </Field>
+            )}
+          />
+          <Controller
+            name="job_id"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid} className="col-span-1">
+                <FieldLabel htmlFor="form-rhf-demo-detail">
+                  Select Job
+                </FieldLabel>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+                <SelectJobs
+                  name="job_id"
+                  onChange={field.onChange}
+                  value={field.value}
+                />
               </Field>
             )}
           />

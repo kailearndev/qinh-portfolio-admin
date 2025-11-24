@@ -13,6 +13,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthenticatedProjectIndexRouteImport } from './routes/_authenticated/project/index'
+import { Route as AuthenticatedJobsIndexRouteImport } from './routes/_authenticated/jobs/index'
 import { Route as AuthenticatedHomeIndexRouteImport } from './routes/_authenticated/home/index'
 import { Route as AuthenticatedExperienceIndexRouteImport } from './routes/_authenticated/experience/index'
 import { Route as AuthenticatedAboutIndexRouteImport } from './routes/_authenticated/about/index'
@@ -39,6 +40,11 @@ const AuthenticatedProjectIndexRoute =
     path: '/project/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedJobsIndexRoute = AuthenticatedJobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedHomeIndexRoute = AuthenticatedHomeIndexRouteImport.update({
   id: '/home/',
   path: '/home/',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AuthenticatedAboutIndexRoute
   '/experience': typeof AuthenticatedExperienceIndexRoute
   '/home': typeof AuthenticatedHomeIndexRoute
+  '/jobs': typeof AuthenticatedJobsIndexRoute
   '/project': typeof AuthenticatedProjectIndexRoute
   '/project/$slug': typeof AuthenticatedProjectSlugIndexRoute
   '/project/register': typeof AuthenticatedProjectRegisterIndexRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/about': typeof AuthenticatedAboutIndexRoute
   '/experience': typeof AuthenticatedExperienceIndexRoute
   '/home': typeof AuthenticatedHomeIndexRoute
+  '/jobs': typeof AuthenticatedJobsIndexRoute
   '/project': typeof AuthenticatedProjectIndexRoute
   '/project/$slug': typeof AuthenticatedProjectSlugIndexRoute
   '/project/register': typeof AuthenticatedProjectRegisterIndexRoute
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/_authenticated/about/': typeof AuthenticatedAboutIndexRoute
   '/_authenticated/experience/': typeof AuthenticatedExperienceIndexRoute
   '/_authenticated/home/': typeof AuthenticatedHomeIndexRoute
+  '/_authenticated/jobs/': typeof AuthenticatedJobsIndexRoute
   '/_authenticated/project/': typeof AuthenticatedProjectIndexRoute
   '/_authenticated/project/$slug/': typeof AuthenticatedProjectSlugIndexRoute
   '/_authenticated/project/register/': typeof AuthenticatedProjectRegisterIndexRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/experience'
     | '/home'
+    | '/jobs'
     | '/project'
     | '/project/$slug'
     | '/project/register'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/experience'
     | '/home'
+    | '/jobs'
     | '/project'
     | '/project/$slug'
     | '/project/register'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/_authenticated/about/'
     | '/_authenticated/experience/'
     | '/_authenticated/home/'
+    | '/_authenticated/jobs/'
     | '/_authenticated/project/'
     | '/_authenticated/project/$slug/'
     | '/_authenticated/project/register/'
@@ -168,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/project'
       fullPath: '/project'
       preLoaderRoute: typeof AuthenticatedProjectIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/jobs/': {
+      id: '/_authenticated/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof AuthenticatedJobsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/home/': {
@@ -212,6 +231,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAboutIndexRoute: typeof AuthenticatedAboutIndexRoute
   AuthenticatedExperienceIndexRoute: typeof AuthenticatedExperienceIndexRoute
   AuthenticatedHomeIndexRoute: typeof AuthenticatedHomeIndexRoute
+  AuthenticatedJobsIndexRoute: typeof AuthenticatedJobsIndexRoute
   AuthenticatedProjectIndexRoute: typeof AuthenticatedProjectIndexRoute
   AuthenticatedProjectSlugIndexRoute: typeof AuthenticatedProjectSlugIndexRoute
   AuthenticatedProjectRegisterIndexRoute: typeof AuthenticatedProjectRegisterIndexRoute
@@ -221,6 +241,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAboutIndexRoute: AuthenticatedAboutIndexRoute,
   AuthenticatedExperienceIndexRoute: AuthenticatedExperienceIndexRoute,
   AuthenticatedHomeIndexRoute: AuthenticatedHomeIndexRoute,
+  AuthenticatedJobsIndexRoute: AuthenticatedJobsIndexRoute,
   AuthenticatedProjectIndexRoute: AuthenticatedProjectIndexRoute,
   AuthenticatedProjectSlugIndexRoute: AuthenticatedProjectSlugIndexRoute,
   AuthenticatedProjectRegisterIndexRoute:

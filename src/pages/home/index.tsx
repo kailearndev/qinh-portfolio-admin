@@ -6,10 +6,12 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { HomeService } from "@/services/home";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -38,10 +40,15 @@ export default function Home() {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const res = await HomeService.updateHome(data);
-    console.log(res);
+    toast.success("Home updated successfully!");
+    return res;
   };
   if (isLoading)
-    return <div className="flex justify-center items-center">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner className="h-10 w-10" />
+      </div>
+    );
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

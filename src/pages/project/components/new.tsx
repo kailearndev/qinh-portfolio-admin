@@ -18,12 +18,14 @@ import { useNavigate } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import SelectJobs from "./select-jobs";
 
 export default function ProjectRegister() {
   const navigate = useNavigate();
   const query = useQueryClient();
   const projectSchema = z.object({
     slug: z.string().min(1, "Slug is required"),
+    job_id: z.string().min(1, "Job is required"),
     short_detail: z
       .string()
       .min(10, "Short detail must be at least 10 characters"),
@@ -41,6 +43,7 @@ export default function ProjectRegister() {
       title: "",
       detail: "",
       thumnail_url: "",
+      job_id: "",
     },
   });
 
@@ -57,8 +60,6 @@ export default function ProjectRegister() {
       toast.error("Failed to create project.");
     }
   };
-
-  console.log(form.formState.errors);
 
   return (
     <div className="flex flex-col gap-2">
@@ -158,6 +159,25 @@ export default function ProjectRegister() {
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
+              </Field>
+            )}
+          />
+          <Controller
+            name="job_id"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid} className="col-span-1">
+                <FieldLabel htmlFor="form-rhf-demo-detail">
+                  Select Job
+                </FieldLabel>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+                <SelectJobs
+                  name="job_id"
+                  onChange={field.onChange}
+                  value={field.value}
+                />
               </Field>
             )}
           />
