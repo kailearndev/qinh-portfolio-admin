@@ -56,7 +56,7 @@ export const columns: ColumnDef<IJob>[] = [
   {
     accessorKey: "projects",
     header: "Total Projects",
-    cell: ({ row }) => <span>{row.original.projects.length}</span>,
+    cell: ({ row }) => <span>{row?.original?.projects?.length}</span>,
   },
   {
     accessorKey: "thumnail_url",
