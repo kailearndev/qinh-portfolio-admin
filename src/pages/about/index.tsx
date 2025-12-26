@@ -6,6 +6,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { AboutService } from "@/services/about";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,7 +44,11 @@ export default function About() {
     return res;
   };
   if (isLoading)
-    return <div className="flex justify-center items-center">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner className="h-10 w-10" />
+      </div>
+    );
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup className="grid gap-4 md:grid-cols-2">

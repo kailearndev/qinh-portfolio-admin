@@ -36,16 +36,16 @@ const data = {
           url: "/about",
         },
         {
+          title: "Jobs",
+          url: "/jobs",
+        },
+        {
           title: "Experience",
           url: "/experience",
         },
         {
           title: "Project",
           url: "/project",
-        },
-        {
-          title: "Contact",
-          url: "/contact",
         },
       ],
     },
@@ -85,7 +85,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
       </SidebarContent>
       <SidebarRail />
-      <SidebarFooter >
+      <SidebarFooter>
         <UserInfomation />
       </SidebarFooter>
     </Sidebar>

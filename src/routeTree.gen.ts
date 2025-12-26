@@ -12,9 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthenticatedProjectIndexRouteImport } from './routes/_authenticated/project/index'
+import { Route as AuthenticatedJobsIndexRouteImport } from './routes/_authenticated/jobs/index'
 import { Route as AuthenticatedHomeIndexRouteImport } from './routes/_authenticated/home/index'
 import { Route as AuthenticatedExperienceIndexRouteImport } from './routes/_authenticated/experience/index'
 import { Route as AuthenticatedAboutIndexRouteImport } from './routes/_authenticated/about/index'
+import { Route as AuthenticatedProjectRegisterIndexRouteImport } from './routes/_authenticated/project/register/index'
+import { Route as AuthenticatedProjectSlugIndexRouteImport } from './routes/_authenticated/project/$slug/index'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
@@ -29,6 +33,17 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedProjectIndexRoute =
+  AuthenticatedProjectIndexRouteImport.update({
+    id: '/project/',
+    path: '/project/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedJobsIndexRoute = AuthenticatedJobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedHomeIndexRoute = AuthenticatedHomeIndexRouteImport.update({
   id: '/home/',
@@ -46,6 +61,18 @@ const AuthenticatedAboutIndexRoute = AuthenticatedAboutIndexRouteImport.update({
   path: '/about/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedProjectRegisterIndexRoute =
+  AuthenticatedProjectRegisterIndexRouteImport.update({
+    id: '/project/register/',
+    path: '/project/register/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedProjectSlugIndexRoute =
+  AuthenticatedProjectSlugIndexRouteImport.update({
+    id: '/project/$slug/',
+    path: '/project/$slug/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,6 +80,10 @@ export interface FileRoutesByFullPath {
   '/about': typeof AuthenticatedAboutIndexRoute
   '/experience': typeof AuthenticatedExperienceIndexRoute
   '/home': typeof AuthenticatedHomeIndexRoute
+  '/jobs': typeof AuthenticatedJobsIndexRoute
+  '/project': typeof AuthenticatedProjectIndexRoute
+  '/project/$slug': typeof AuthenticatedProjectSlugIndexRoute
+  '/project/register': typeof AuthenticatedProjectRegisterIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -60,6 +91,10 @@ export interface FileRoutesByTo {
   '/about': typeof AuthenticatedAboutIndexRoute
   '/experience': typeof AuthenticatedExperienceIndexRoute
   '/home': typeof AuthenticatedHomeIndexRoute
+  '/jobs': typeof AuthenticatedJobsIndexRoute
+  '/project': typeof AuthenticatedProjectIndexRoute
+  '/project/$slug': typeof AuthenticatedProjectSlugIndexRoute
+  '/project/register': typeof AuthenticatedProjectRegisterIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,12 +104,34 @@ export interface FileRoutesById {
   '/_authenticated/about/': typeof AuthenticatedAboutIndexRoute
   '/_authenticated/experience/': typeof AuthenticatedExperienceIndexRoute
   '/_authenticated/home/': typeof AuthenticatedHomeIndexRoute
+  '/_authenticated/jobs/': typeof AuthenticatedJobsIndexRoute
+  '/_authenticated/project/': typeof AuthenticatedProjectIndexRoute
+  '/_authenticated/project/$slug/': typeof AuthenticatedProjectSlugIndexRoute
+  '/_authenticated/project/register/': typeof AuthenticatedProjectRegisterIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login' | '/about' | '/experience' | '/home'
+  fullPaths:
+    | '/'
+    | '/auth/login'
+    | '/about'
+    | '/experience'
+    | '/home'
+    | '/jobs'
+    | '/project'
+    | '/project/$slug'
+    | '/project/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login' | '/about' | '/experience' | '/home'
+  to:
+    | '/'
+    | '/auth/login'
+    | '/about'
+    | '/experience'
+    | '/home'
+    | '/jobs'
+    | '/project'
+    | '/project/$slug'
+    | '/project/register'
   id:
     | '__root__'
     | '/'
@@ -83,6 +140,10 @@ export interface FileRouteTypes {
     | '/_authenticated/about/'
     | '/_authenticated/experience/'
     | '/_authenticated/home/'
+    | '/_authenticated/jobs/'
+    | '/_authenticated/project/'
+    | '/_authenticated/project/$slug/'
+    | '/_authenticated/project/register/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -114,6 +175,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/project/': {
+      id: '/_authenticated/project/'
+      path: '/project'
+      fullPath: '/project'
+      preLoaderRoute: typeof AuthenticatedProjectIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/jobs/': {
+      id: '/_authenticated/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof AuthenticatedJobsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/home/': {
       id: '/_authenticated/home/'
       path: '/home'
@@ -135,6 +210,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAboutIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/project/register/': {
+      id: '/_authenticated/project/register/'
+      path: '/project/register'
+      fullPath: '/project/register'
+      preLoaderRoute: typeof AuthenticatedProjectRegisterIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/project/$slug/': {
+      id: '/_authenticated/project/$slug/'
+      path: '/project/$slug'
+      fullPath: '/project/$slug'
+      preLoaderRoute: typeof AuthenticatedProjectSlugIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -142,12 +231,21 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAboutIndexRoute: typeof AuthenticatedAboutIndexRoute
   AuthenticatedExperienceIndexRoute: typeof AuthenticatedExperienceIndexRoute
   AuthenticatedHomeIndexRoute: typeof AuthenticatedHomeIndexRoute
+  AuthenticatedJobsIndexRoute: typeof AuthenticatedJobsIndexRoute
+  AuthenticatedProjectIndexRoute: typeof AuthenticatedProjectIndexRoute
+  AuthenticatedProjectSlugIndexRoute: typeof AuthenticatedProjectSlugIndexRoute
+  AuthenticatedProjectRegisterIndexRoute: typeof AuthenticatedProjectRegisterIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAboutIndexRoute: AuthenticatedAboutIndexRoute,
   AuthenticatedExperienceIndexRoute: AuthenticatedExperienceIndexRoute,
   AuthenticatedHomeIndexRoute: AuthenticatedHomeIndexRoute,
+  AuthenticatedJobsIndexRoute: AuthenticatedJobsIndexRoute,
+  AuthenticatedProjectIndexRoute: AuthenticatedProjectIndexRoute,
+  AuthenticatedProjectSlugIndexRoute: AuthenticatedProjectSlugIndexRoute,
+  AuthenticatedProjectRegisterIndexRoute:
+    AuthenticatedProjectRegisterIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supbase";
 import type { IAbout } from "@/types/about";
 
 const getAbout = async () => {
-  const { data, error } = await supabase.from("about").select("*, users(*), experiences(*)").single();
+  const { data, error } = await supabase.from("about").select("*, users(*)").single();
   if (error) {
     throw new Error(error.message);
   }

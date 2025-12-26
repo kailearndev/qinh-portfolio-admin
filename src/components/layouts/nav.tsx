@@ -4,41 +4,20 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage
+  BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Outlet, useLocation } from "@tanstack/react-router";
+import { navBar } from "./menu";
 
 export default function Navbar() {
   const location = useLocation();
-  const navBar = [
-    {
-      title: "Home",
-      url: "/home",
-    },
-    {
-      title: "About",
-      url: "/about",
-    },
 
-    {
-      title: "Experience",
-      url: "/experience",
-    },
-    {
-      title: "Project",
-      url: "/project",
-    },
-    {
-      title: "Contact",
-      url: "/contact",
-    },
-  ];
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -51,7 +30,6 @@ export default function Navbar() {
           />
           <Breadcrumb>
             <BreadcrumbList>
-
               {navBar.map((item) => {
                 if (item.url === location.pathname) {
                   return (
@@ -70,9 +48,7 @@ export default function Navbar() {
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Outlet />
         </div>
-
       </SidebarInset>
-
     </SidebarProvider>
   );
 }
