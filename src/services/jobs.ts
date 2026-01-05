@@ -19,6 +19,7 @@ const updateJob = async (job: IJob) => {
     summary: job.summary,
     id: job.id,
     job_thumbnail: job.job_thumbnail,
+    slug: job.slug,
     // user_id KHÔNG update trừ khi bạn muốn update owner
   };
 

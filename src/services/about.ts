@@ -2,12 +2,12 @@ import { supabase } from "@/lib/supbase";
 import type { IAbout } from "@/types/about";
 
 const getAbout = async () => {
-  const { data, error } = await supabase.from("about").select("*, users(*)").single();
+  const { data, error } = await supabase.from("about").select("*").single();
   if (error) {
     throw new Error(error.message);
   }
-  return data
-}
+  return data;
+};
 const updateAbout = async (aboutPayload: IAbout) => {
   const { data, error } = await supabase
     .from("about")
@@ -15,8 +15,8 @@ const updateAbout = async (aboutPayload: IAbout) => {
     .eq("id", aboutPayload.id);
   if (error) throw error;
   return data;
-}
+};
 export const AboutService = {
   getAbout,
-  updateAbout
+  updateAbout,
 };
