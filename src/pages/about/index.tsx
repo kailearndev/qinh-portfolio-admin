@@ -6,7 +6,6 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { AboutService } from "@/services/about";
@@ -31,14 +30,14 @@ export default function About() {
       .min(10, { message: "Slogan must be at least 3 characters." }),
     client_worked: z.string("Client Worked is required"),
     client_description: z.string("Client Completed is required"),
-    works_experienced: z.string("Years Experience is required"),
+    works_experienced: z.number(" Experience is required"),
     works_description: z.string("Years Experience is required"),
     about_thumbnail: z.string("About Thumbnail is required"),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
 
-    defaultValues: data,
+    values: data,
   });
   useEffect(() => {
     if (data) {
@@ -46,8 +45,13 @@ export default function About() {
     }
   }, [data]);
 
+  console.log(form.formState.errors);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const res = await AboutService.updateAbout(data);
+    const res = await AboutService.updateAbout({
+      ...data,
+      works_experienced: Number(data.works_experienced),
+    });
     toast.success("About updated successfully!");
     return res;
   };
@@ -58,8 +62,8 @@ export default function About() {
       </div>
     );
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <FieldGroup className="grid gap-4 md:grid-cols-2">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <FieldGroup className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <h1 className="text-4xl font-bold mb-4 flex items-center gap-2 ">
           About <PiIcon className="text-orange-300" />
         </h1>
@@ -75,46 +79,53 @@ export default function About() {
             Cancel
           </Button>
         </section>
-        <Controller
-          name="slogan"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-name">Slogan</FieldLabel>
-              <Textarea
-                {...field}
-                id="form-rhf-demo-slogan"
-                aria-invalid={fieldState.invalid}
-                placeholder="Input your slogan"
-                autoComplete="off"
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-        <Controller
-          name="about_thumbnail"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-about_thumbnail">
-                About Thumbnail
-              </FieldLabel>
-              <InputUpload
-                {...field}
-                key={"home-avt"}
-                url={field.value}
-                accept="image/*"
-                name="about_thumbnail"
-                onChange={field.onChange}
-                onDelete={() => form.setValue("about_thumbnail", "")}
-              />
+        <div className="col-span-2  space-y-4">
+          <Controller
+            name="about_thumbnail"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="form-rhf-demo-about_thumbnail">
+                  About Thumbnail
+                </FieldLabel>
+                <InputUpload
+                  {...field}
+                  key={"about-thumbnail"}
+                  url={field.value}
+                  accept="image/*"
+                  name="about_thumbnail"
+                  onChange={field.onChange}
+                  onDelete={() => form.setValue("about_thumbnail", "")}
+                />
 
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-        <Controller
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          <Controller
+            name="slogan"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="form-rhf-demo-name">Slogan</FieldLabel>
+                <Textarea
+                  {...field}
+                  id="form-rhf-demo-slogan"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Input your slogan"
+                  autoComplete="off"
+                  value={field.value}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </div>
+        {/* <Controller
           name="client_worked"
           control={form.control}
           render={({ field, fieldState }) => (
@@ -128,6 +139,7 @@ export default function About() {
                 aria-invalid={fieldState.invalid}
                 placeholder="Input your avatar URL"
                 autoComplete="off"
+                value={field.value}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -147,6 +159,7 @@ export default function About() {
                 aria-invalid={fieldState.invalid}
                 placeholder="Input your positions"
                 autoComplete="off"
+                value={field.value}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -162,10 +175,12 @@ export default function About() {
               </FieldLabel>
               <Input
                 {...field}
-                id="form-rhf-demo-works_experiened"
+                id="form-rhf-demo-works_experienced"
                 aria-invalid={fieldState.invalid}
                 placeholder="Input your positions"
                 autoComplete="off"
+                type="number"
+                value={field.value}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -185,11 +200,12 @@ export default function About() {
                 aria-invalid={fieldState.invalid}
                 placeholder="Input your phone"
                 autoComplete="off"
+                value={field.value}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
-        />
+        /> */}
       </FieldGroup>
     </form>
   );

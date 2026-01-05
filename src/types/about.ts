@@ -4,6 +4,6 @@ export interface IAbout {
   client_worked: string;
   client_description: string;
   slogan: string;
-  works_experienced: string;
+  works_experienced: number;
   about_thumbnail: string;
 }
