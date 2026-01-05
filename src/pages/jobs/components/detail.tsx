@@ -16,6 +16,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { slugtify } from "@/lib/slugtify";
 import { JobService } from "@/services/jobs";
 import type { IJob } from "@/types/job";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,7 +45,6 @@ export default function ExperienceDetail({
   });
   const form = useForm<z.infer<typeof experienceSchema>>({
     resolver: zodResolver(experienceSchema),
-
     values: data,
   });
 
@@ -52,6 +52,7 @@ export default function ExperienceDetail({
     const res = await JobService.updateJob({
       ...values,
       id: data?.id || "",
+      slug: slugtify(values.title),
     });
     if (res.status === "success") {
       toast.success("Experience updated successfully!");
@@ -122,6 +123,7 @@ export default function ExperienceDetail({
                         Job Thumbnail
                       </FieldLabel>
                       <InputUpload
+                        {...field}
                         url={field.value}
                         name="job_thumbnail"
                         onChange={field.onChange}

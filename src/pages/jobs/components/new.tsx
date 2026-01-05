@@ -16,6 +16,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { slugtify } from "@/lib/slugtify";
 import { JobService } from "@/services/jobs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,7 +51,10 @@ export default function JobDetail({
   });
 
   const onSubmit = async (values: z.infer<typeof experienceSchema>) => {
-    const res = await JobService.createJob(values);
+    const res = await JobService.createJob({
+      ...values,
+      slug: slugtify(values.title),
+    });
     if (res.status === "success") {
       toast.success("Job created successfully!");
       await query.invalidateQueries({ queryKey: ["jobs-data"] });
@@ -120,6 +124,7 @@ export default function JobDetail({
                         Job Thumbnail
                       </FieldLabel>
                       <InputUpload
+                        {...field}
                         url={field.value}
                         name="job_thumbnail"
                         onChange={field.onChange}

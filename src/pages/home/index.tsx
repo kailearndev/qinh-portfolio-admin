@@ -1,3 +1,4 @@
+import InputUpload from "@/components/input-upload";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -90,15 +91,15 @@ export default function Home() {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="form-rhf-demo-avatar_url">
-                Avartar URL
+                Avatar URL
               </FieldLabel>
-              <Input
-                {...field}
-                id="form-rhf-demo-avatar_url"
-                aria-invalid={fieldState.invalid}
-                placeholder="Input your avatar URL"
-                autoComplete="off"
+              <InputUpload
+                url={field.value}
+                name="avatar_url"
+                onChange={field.onChange}
+                onDelete={() => form.setValue("avatar_url", "")}
               />
+
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
