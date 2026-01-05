@@ -11,6 +11,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { HomeService } from "@/services/home";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -26,19 +27,23 @@ const formSchema = z.object({
   facebook: z.string(),
   address: z.string(),
   website: z.string(),
+  file_cv: z.string(),
 });
 export default function Home() {
   const { data, isLoading } = useQuery({
     queryFn: () => HomeService.getHome(),
-    queryKey: ["home-data"],
+    queryKey: ["home-data-22"],
+    refetchOnMount: true,
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
-    values: data,
+    defaultValues: data,
   });
 
+  useEffect(() => {
+    form.reset(data);
+  }, [data]);
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const res = await HomeService.updateHome(data);
     toast.success("Home updated successfully!");
@@ -94,10 +99,33 @@ export default function Home() {
                 Avatar URL
               </FieldLabel>
               <InputUpload
+                {...field}
+                key={"home-avt"}
                 url={field.value}
                 name="avatar_url"
                 onChange={field.onChange}
                 onDelete={() => form.setValue("avatar_url", "")}
+              />
+
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="file_cv"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="form-rhf-demo-file_cv">File CV</FieldLabel>
+              <InputUpload
+                {...field}
+                key={"file-cv"}
+                url={field.value}
+                path="files"
+                name="file_cv"
+                accept=".pdf,.doc,.docx"
+                onChange={field.onChange}
+                onDelete={() => form.setValue("file_cv", "")}
               />
 
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -192,7 +220,7 @@ export default function Home() {
           )}
         />
         <Controller
-          name="email"
+          name="tiktok"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>

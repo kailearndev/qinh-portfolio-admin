@@ -4,15 +4,11 @@ import type { IHome } from "@/types/home";
 const getHome = async () => {
   // Simulate an API call
 
-
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .single();
+  const { data, error } = await supabase.from("users").select("*").single();
 
   if (error) throw error;
   return data;
-}
+};
 const updateHome = async (homeData: IHome) => {
   const { data, error } = await supabase
     .from("users")
@@ -20,9 +16,9 @@ const updateHome = async (homeData: IHome) => {
     .eq("id", homeData.id);
   if (error) throw error;
   return data;
-}
+};
 
 export const HomeService = {
   getHome,
-  updateHome
-}
+  updateHome,
+};

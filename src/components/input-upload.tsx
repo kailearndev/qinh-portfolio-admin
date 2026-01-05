@@ -1,6 +1,7 @@
+"use client";
+
 import { uploadImage } from "@/services/upload";
-import { Link } from "@tanstack/react-router";
-import { Link2, Trash } from "lucide-react";
+import { FileText, Link2, Trash } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
@@ -15,6 +16,7 @@ type InputUploadProps = {
   url?: string;
   onChange?: (value: string) => void;
   onDelete?: () => void;
+  path?: string;
 };
 
 const InputUpload = ({
@@ -25,42 +27,43 @@ const InputUpload = ({
   onChange,
   url,
   onDelete,
+  path = "images",
 }: InputUploadProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [value, setValue] = useState<string>(url || "");
+
+  // Trạng thái file cục bộ khi vừa chọn (chưa upload)
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  // Xử lý khi chọn file từ máy tính
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (!selected) return;
     setFile(selected);
-    onChange?.(selected.name);
   };
 
+  // Xóa sạch trạng thái (cả file đang chọn và link đã có)
   const clearFile = () => {
     setFile(null);
-    onDelete?.();
-    setValue("");
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
+    if (inputRef.current) inputRef.current.value = "";
+    onDelete?.(); // Báo cho React Hook Form biết giá trị giờ là rỗng
+    onChange?.("");
   };
 
+  // Xử lý Upload lên Server
   const handleUpload = async () => {
     if (!file) {
-      toast.error("Please select a file.");
+      toast.error("Please select a file first.");
       return;
     }
 
     setIsUploading(true);
-
     try {
-      const url = await uploadImage(file);
-      if (url) {
+      const uploadedUrl = await uploadImage(file, path);
+      if (uploadedUrl) {
         toast.success("Upload successful!");
-        onChange?.(url);
-        setValue(url);
+        onChange?.(uploadedUrl); // Cập nhật URL vào Form
+        setFile(null); // Upload xong thì xóa file tạm
       }
     } catch (err) {
       toast.error("Upload failed!");
@@ -72,17 +75,39 @@ const InputUpload = ({
   return (
     <div className="flex w-full max-w-md items-center gap-2">
       <div className="relative w-full">
-        {value ? (
-          <div className="flex gap-2">
+        {url ? (
+          /* TRƯỜNG HỢP 1: ĐÃ CÓ URL (Từ server hoặc sau khi upload) */
+          <div className="flex items-center relative">
             <Input
               id={id}
               name={name}
-              value={value}
+              value={url}
               readOnly
-              className="w-full pr-8"
+              className="w-full pr-10 bg-muted/50"
+            />
+            <Trash
+              size={16}
+              className="absolute right-3 cursor-pointer text-muted-foreground hover:text-red-500 transition-colors"
+              onClick={clearFile}
+            />
+          </div>
+        ) : file ? (
+          /* TRƯỜNG HỢP 2: ĐANG CHỌN FILE TẠM (Chờ bấm nút Upload) */
+          <div className="flex items-center justify-between px-3 py-2 border rounded-md bg-blue-50 dark:bg-blue-900/20 border-blue-200">
+            <div className="flex items-center gap-2 overflow-hidden">
+              <FileText size={16} className="text-blue-500 flex-shrink-0" />
+              <span className="text-sm truncate font-medium text-blue-700 dark:text-blue-300">
+                {file.name}
+              </span>
+            </div>
+            <Trash
+              size={16}
+              className="cursor-pointer text-blue-400 hover:text-red-500 ml-2"
+              onClick={clearFile}
             />
           </div>
         ) : (
+          /* TRƯỜNG HỢP 3: CHƯA CÓ GÌ - HIỂN THỊ Ô CHỌN FILE */
           <Input
             name={name}
             ref={inputRef}
@@ -91,35 +116,35 @@ const InputUpload = ({
             accept={accept}
             multiple={multiple}
             onChange={handleFileChange}
-            onClick={(e) => e.stopPropagation()}
-            className="px-2 pr-8"
-          />
-        )}
-        {(file || value) && (
-          <Trash
-            size={16}
-            className="absolute right-2 top-0 bottom-0 my-auto cursor-pointer text-muted-foreground hover:text-red-500"
-            onClick={clearFile}
+            className="px-2"
           />
         )}
       </div>
-      {value && (
-        <Link
-          to={value}
+
+      {/* Nút xem link trực tiếp */}
+      {url && (
+        <a
+          href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className=" items-center px-3 py-2"
+          className="flex items-center justify-center p-2 rounded-md border hover:bg-accent transition-colors"
+          title="View document"
         >
-          <Link2 />
-        </Link>
+          <Link2 size={20} />
+        </a>
       )}
-      <Button
-        type="button"
-        onClick={handleUpload}
-        disabled={isUploading || !file}
-      >
-        {isUploading ? <Spinner /> : "Upload"}
-      </Button>
+
+      {/* Nút bấm thực hiện upload (Chỉ hiện khi có file tạm) */}
+      {!url && file && (
+        <Button
+          type="button"
+          onClick={handleUpload}
+          disabled={isUploading}
+          className="min-w-[80px]"
+        >
+          {isUploading ? <Spinner className="h-4 w-4" /> : "Upload"}
+        </Button>
+      )}
     </div>
   );
 };
