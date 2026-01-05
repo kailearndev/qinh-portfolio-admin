@@ -1,3 +1,4 @@
+import InputUpload from "@/components/input-upload";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -12,6 +13,7 @@ import { AboutService } from "@/services/about";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { PiIcon } from "lucide-react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -31,12 +33,18 @@ export default function About() {
     client_description: z.string("Client Completed is required"),
     works_experienced: z.string("Years Experience is required"),
     works_description: z.string("Years Experience is required"),
+    about_thumbnail: z.string("About Thumbnail is required"),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
-    values: data,
+
+    defaultValues: data,
   });
+  useEffect(() => {
+    if (data) {
+      form.reset(data);
+    }
+  }, [data]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const res = await AboutService.updateAbout(data);
@@ -80,6 +88,28 @@ export default function About() {
                 placeholder="Input your slogan"
                 autoComplete="off"
               />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="about_thumbnail"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="form-rhf-demo-about_thumbnail">
+                About Thumbnail
+              </FieldLabel>
+              <InputUpload
+                {...field}
+                key={"home-avt"}
+                url={field.value}
+                accept="image/*"
+                name="about_thumbnail"
+                onChange={field.onChange}
+                onDelete={() => form.setValue("about_thumbnail", "")}
+              />
+
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
