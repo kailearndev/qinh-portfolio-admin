@@ -21,9 +21,9 @@ const formSchema = z.object({
   name: z.string(),
   avatar_url: z.string(),
   positions: z.string(),
-  phone: z.string(),
-  email: z.string(),
-  tiktok: z.string(),
+  x: z.string(),
+  line: z.string(),
+  ig: z.string(),
   facebook: z.string(),
   address: z.string(),
   website: z.string(),
@@ -152,16 +152,16 @@ export default function Home() {
           )}
         />
         <Controller
-          name="email"
+          name="line"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-email">Email</FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-line">Line</FieldLabel>
               <Input
                 {...field}
-                id="form-rhf-demo-positions"
+                id="form-rhf-demo-line"
                 aria-invalid={fieldState.invalid}
-                placeholder="Input your positions"
+                placeholder="Input your line"
                 autoComplete="off"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -169,16 +169,16 @@ export default function Home() {
           )}
         />
         <Controller
-          name="phone"
+          name="ig"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-phone">Phone</FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-ig">Instagram</FieldLabel>
               <Input
                 {...field}
-                id="form-rhf-demo-phone"
+                id="form-rhf-demo-ig"
                 aria-invalid={fieldState.invalid}
-                placeholder="Input your phone"
+                placeholder="Input your Instagram"
                 autoComplete="off"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -220,16 +220,16 @@ export default function Home() {
           )}
         />
         <Controller
-          name="tiktok"
+          name="x"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-rhf-demo-tiktok">Tiktok</FieldLabel>
+              <FieldLabel htmlFor="form-rhf-demo-x">X</FieldLabel>
               <Input
                 {...field}
-                id="form-rhf-demo-tiktok"
+                id="form-rhf-demo-x"
                 aria-invalid={fieldState.invalid}
-                placeholder="Input your positions"
+                placeholder="Input your X"
                 autoComplete="off"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

@@ -72,11 +72,12 @@ export default function LoginForm() {
         <FormField
           control={form.control}
           name="password"
+          
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="shadcn" {...field} type="password" />
               </FormControl>
               <FormDescription>This is your password.</FormDescription>
               <FormMessage />
